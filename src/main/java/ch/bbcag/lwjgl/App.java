@@ -40,6 +40,8 @@ public class App {
     private Camera camera;
     private int dist = 5;
     private float[] pos = new float[3];
+    float yaw = 0;
+    float pitch = 0;
 
     public void run() throws Exception {
         System.out.println("Hello LWJGL " + Version.getVersion() + "!");
@@ -103,7 +105,7 @@ public class App {
 
 
         glfwSetWindowSizeCallback(window, (window, w, h) -> {
-            camera.updateProjectionMatrix((float) Math.toRadians(60), (float) w / h, 0.01f, 1000.0f);;
+            camera.updateProjectionMatrix((float) Math.toRadians(10), (float) w / h, 0.01f, 1000.0f);
             glViewport(0, 0, w, h);
         });
 
@@ -112,28 +114,26 @@ public class App {
                 glfwSetWindowShouldClose(window, true);
 
             if ( key == GLFW_KEY_RIGHT ) {
-                camera.moveRight();
+                yaw = -0.001f;
             }
 
             if ( key == GLFW_KEY_LEFT ) {
-                camera.position.x -= 0.1;
+                yaw = 0.001f;
             }
 
             if ( key == GLFW_KEY_UP ) {
-                camera.position.y += 0.1;
+                pitch = 0.001f;
             }
 
             if ( key == GLFW_KEY_DOWN ) {
-                camera.position.y -= 0.1;
+                pitch = -0.001f;
             }
         });
 
         glfwSetScrollCallback(window, (window, ox, oy) -> {
-            dist += oy;
-            camera.position.set(dist, dist, dist);
-            camera.updateMatrices();
+            dist += oy* 3;
+            camera.offset.add(dist, dist, dist);
         });
-
 
     }
 
@@ -141,7 +141,7 @@ public class App {
         String glVersion = glGetString(GL_VERSION);
         System.out.println(glVersion);
 
-        var material = new Material("physicalmaterial",
+        var wallMaterial = new Material("physicalmaterial",
                 "/pbr/wall/albedo.png",
                 "/pbr/wall/normal.png",
                 "/pbr/wall/roughness.png",
@@ -149,20 +149,43 @@ public class App {
                 "/pbr/wall/metallic.png"
         );
 
-        var material2 = new Material("physicalmaterial",
+        var grassMaterial = new Material("physicalmaterial",
+                "/pbr/grass/albedo.png",
+                "/pbr/grass/normal.png",
+                "/pbr/grass/roughness.png",
+                "/pbr/grass/ao.png",
+                "/pbr/grass/metallic.png"
+        );
+
+        wallMaterial.offsetRepeat.x = 64;
+
+        var plasticMaterial = new Material("physicalmaterial",
                 "/pbr/plastic/albedo.png",
                 "/pbr/plastic/normal.png",
                 "/pbr/plastic/roughness.png",
                 "/pbr/plastic/ao.png",
                 "/pbr/plastic/metallic.png"
         );
-        var scene = Mesh.fromObj("src/main/resources/meshes/scene1.obj", material);
-        scene.get(0).scale.set(10, 10, 10);
-        var suzanne = Mesh.fromObj("src/main/resources/meshes/sphere.obj", material2).get(0);
+
+        var rustedIronMaterial = new Material("physicalmaterial",
+                "/pbr/rusted_iron/albedo.png",
+                "/pbr/rusted_iron/normal.png",
+                "/pbr/rusted_iron/roughness.png",
+                "/pbr/rusted_iron/ao.png",
+                "/pbr/rusted_iron/metallic.png"
+        );
+        var scene = Mesh.fromObj("src/main/resources/meshes/scene1.obj", wallMaterial);
+
+
+        var suzanne = Mesh.fromObj("src/main/resources/meshes/sphere.obj", plasticMaterial).get(0);
+        var rock = Mesh.fromObj("src/main/resources/meshes/rock.obj", rustedIronMaterial).get(0);
         suzanne.position.y = 1;
         suzanne.position.z = 2;
         suzanne.updateMatrices();
         camera = new Camera((float) Math.toRadians(10), (float) width / height, 0.01f, 1000.0f);
+
+        camera.offset.set(25, 25, 25);
+        camera.update(0, 0);
 
         glEnable(GL_MULTISAMPLE);
         glEnable(GL_DEPTH_TEST);
@@ -172,10 +195,7 @@ public class App {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-        camera.position.set(dist, dist, dist);
-        camera.lookAt(new Vector3f(0, 0, 0));
-        camera.updateMatrices();
-
+        float t = 0.0f;
         while ( !glfwWindowShouldClose(window) ) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             imGuiGlfw.newFrame();
@@ -185,10 +205,15 @@ public class App {
                 mesh.updateMatrices();
                 mesh.draw(camera);
             }
-
+            suzanne.position.x = (float)Math.cos(t) * 2.0f;
+            suzanne.position.z = (float)Math.sin(t) * 2.0f;
             suzanne.updateMatrices();
             suzanne.draw(camera);
+            t += 0.01;
 
+            rock.rotation.rotateLocalY(0.01f);
+            rock.updateMatrices();
+            rock.draw(camera);
             if(ImGui.inputFloat3("pos", pos)) {
                 System.out.println(pos[0]);
             }

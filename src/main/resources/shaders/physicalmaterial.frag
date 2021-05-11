@@ -17,13 +17,14 @@ in vec3 position;
 in vec3 normal;
 in vec2 uv;
 
-// lights
-vec3 lightPositions[1] = {
-	vec3(10.0, 10.0, 10.0)
+vec3 lightPositions[2] = {
+	vec3(10.0, 10.0, 10.0),
+vec3(-10.0, 10.0, -10.0),
 };
 
-vec3 lightColors[1] = {
-vec3(1.0, 1.0, 1.0) * 1000.0
+vec3 lightColors[2] = {
+	vec3(1.0, 1.0, 1.0) * 1000.0,
+vec3(1.0, 1.0, 1.0) * 100.0
 };
 
 out vec4 FragColor;
@@ -99,7 +100,7 @@ void main()
 	float ao        = texture(displacementTexture, uv).r;
 
 	vec3 N = getNormalFromMap();
-	vec3 V = normalize((inverse(viewMatrix) * vec4(cameraPosition, 0.0)).xyz - position);
+	vec3 V = normalize((inverse(viewMatrix) * vec4(cameraPosition, 1.0)).xyz - position);
 
 	// calculate reflectance at normal incidence; if dia-electric (like plastic) use F0
 	// of 0.04 and if it's a metal, use the albedo color as F0 (metallic workflow)
@@ -108,7 +109,7 @@ void main()
 
 	// reflectance equation
 	vec3 Lo = vec3(0.0);
-	for(int i = 0; i < 4; ++i)
+	for(int i = 0; i < 2; ++i)
 	{
 		// calculate per-light radiance
 		vec3 L = normalize(lightPositions[i] - position);

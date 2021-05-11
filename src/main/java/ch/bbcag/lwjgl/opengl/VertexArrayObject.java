@@ -25,6 +25,7 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 public class VertexArrayObject {
     public static List<VertexArrayObject> fromObj(String resourcePath) throws Exception {
+        System.out.println(resourcePath);
         AIScene aiScene = aiImportFile(resourcePath, aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FixInfacingNormals | aiProcess_FlipUVs);
         if(aiScene.mNumMeshes() <= 0) throw new Exception("No meshes fround in file: " + resourcePath);
         var list = new ArrayList<VertexArrayObject>();
@@ -66,9 +67,12 @@ public class VertexArrayObject {
         var uvArrayBuffer = glGenBuffersARB();
         glBindBufferARB(GL_ARRAY_BUFFER_ARB, uvArrayBuffer);
         var uvs = mesh.mTextureCoords(0);
-        nglBufferDataARB(GL_ARRAY_BUFFER_ARB, AIVector3D.SIZEOF * uvs.remaining(), uvs.address(), GL_STATIC_DRAW_ARB);
-        glVertexAttribPointer(UV_ATTRIBUTE_LOCATION, 3, GL_FLOAT, false, 0, 0);
-        glEnableVertexAttribArray(UV_ATTRIBUTE_LOCATION);
+        if(uvs != null)  {
+            nglBufferDataARB(GL_ARRAY_BUFFER_ARB, AIVector3D.SIZEOF * uvs.remaining(), uvs.address(), GL_STATIC_DRAW_ARB);
+            glVertexAttribPointer(UV_ATTRIBUTE_LOCATION, 3, GL_FLOAT, false, 0, 0);
+            glEnableVertexAttribArray(UV_ATTRIBUTE_LOCATION);
+        }
+
 
         var faceCount = mesh.mNumFaces();
         elementCount = faceCount * 3;

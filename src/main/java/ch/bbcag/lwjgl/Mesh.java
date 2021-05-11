@@ -33,4 +33,5 @@ public class Mesh extends Object3D {
         material.setUniform("cameraPosition", camera.position);
         vao.draw();
     }
+
 }

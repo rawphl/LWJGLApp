@@ -10,7 +10,7 @@ uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 uniform vec3 cameraPosition;
-uniform vec4 offsetRepeat;
+uniform vec2 offsetRepeat;
 
 uniform sampler2D diffuseTexture;
 uniform sampler2D normalTexture;
@@ -27,6 +27,6 @@ void main() {
 	vec4 p = modelMatrix * vec4(vertex_position, 1.0);
 	position = p.xyz;
 	normal = normalMatrix * vertex_normal;
-	uv = vertex_uv * 16.0;
+	uv = vertex_uv * offsetRepeat.x;
 	gl_Position = projectionMatrix * viewMatrix * p;
 }
