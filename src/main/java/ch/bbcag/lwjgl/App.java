@@ -113,26 +113,52 @@ public class App {
             if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
                 glfwSetWindowShouldClose(window, true);
 
-            if ( key == GLFW_KEY_RIGHT ) {
-                yaw = -0.001f;
+
+            if ( key == GLFW_KEY_R) {
+                camera.update(0.01f, 0);
+            }
+            if ( key == GLFW_KEY_DOWN ) {
+                camera.target.x += 1;
+                camera.target.z += 1;
+                camera.position.set(camera.target).add(camera.offset);
+                camera.updateMatrices();
+            }
+
+            if ( key == GLFW_KEY_UP) {
+                camera.target.x -= 1;
+                camera.target.z -= 1;
+                camera.position.set(camera.target).add(camera.offset);
+                camera.updateMatrices();
             }
 
             if ( key == GLFW_KEY_LEFT ) {
-                yaw = 0.001f;
+                camera.target.x -= 1;
+                camera.target.z += 1;
+                camera.position.set(camera.target).add(camera.offset);
+                camera.updateMatrices();
             }
 
-            if ( key == GLFW_KEY_UP ) {
-                pitch = 0.001f;
-            }
-
-            if ( key == GLFW_KEY_DOWN ) {
-                pitch = -0.001f;
+            if ( key == GLFW_KEY_RIGHT) {
+                camera.target.x += 1;
+                camera.target.z -= 1;
+                camera.position.set(camera.target).add(camera.offset);
+                camera.updateMatrices();
             }
         });
 
         glfwSetScrollCallback(window, (window, ox, oy) -> {
             dist += oy* 3;
-            camera.offset.add(dist, dist, dist);
+            if(oy > 0) {
+                camera.zoom += oy;
+                camera.position.set(camera.target).add(camera.offset.add(camera.zoom, camera.zoom, camera.zoom));
+
+            } else {
+                camera.zoom -= oy;
+                camera.position.set(camera.target).add(camera.offset.sub(camera.zoom, camera.zoom, camera.zoom));
+
+            }
+
+            camera.updateMatrices();
         });
 
     }
@@ -174,19 +200,21 @@ public class App {
                 "/pbr/rusted_iron/ao.png",
                 "/pbr/rusted_iron/metallic.png"
         );
-        var scene = Mesh.fromObj("src/main/resources/meshes/scene1.obj", wallMaterial);
+        var scene = Mesh.fromObj("src/main/resources/meshes/scene1.obj", grassMaterial);
 
 
-        var suzanne = Mesh.fromObj("src/main/resources/meshes/sphere.obj", plasticMaterial).get(0);
+        var suzanne = Mesh.fromObj("src/main/resources/meshes/suzanne.obj", plasticMaterial).get(0);
         var rock = Mesh.fromObj("src/main/resources/meshes/rock.obj", rustedIronMaterial).get(0);
         suzanne.position.y = 1;
         suzanne.position.z = 2;
         suzanne.updateMatrices();
+
+        pos[0] = suzanne.position.x;
+        pos[1] = suzanne.position.y;
+        pos[2] = suzanne.position.z;
         camera = new Camera((float) Math.toRadians(10), (float) width / height, 0.01f, 1000.0f);
-
-        camera.offset.set(25, 25, 25);
         camera.update(0, 0);
-
+        camera.updateMatrices();
         glEnable(GL_MULTISAMPLE);
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
@@ -207,6 +235,8 @@ public class App {
             }
             suzanne.position.x = (float)Math.cos(t) * 2.0f;
             suzanne.position.z = (float)Math.sin(t) * 2.0f;
+            suzanne.rotation.rotateLocalY(0.01f);
+            suzanne.rotation.rotateLocalX(0.01f);
             suzanne.updateMatrices();
             suzanne.draw(camera);
             t += 0.01;
@@ -214,8 +244,14 @@ public class App {
             rock.rotation.rotateLocalY(0.01f);
             rock.updateMatrices();
             rock.draw(camera);
+            pos[0] = suzanne.position.x;
+            pos[1] = suzanne.position.y;
+            pos[2] = suzanne.position.z;
+
+            ImGui.text("Suzanne position:");
+
             if(ImGui.inputFloat3("pos", pos)) {
-                System.out.println(pos[0]);
+
             }
 
             ImGui.render();
