@@ -1,52 +1,28 @@
-package ch.bbcag.lwjgl.opengl;
+package ch.bbcag.lwjgl.framework;
 
-import ch.bbcag.lwjgl.Mesh;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.assimp.AIMesh;
-import org.lwjgl.assimp.AIScene;
-import org.lwjgl.assimp.AIVector2D;
 import org.lwjgl.assimp.AIVector3D;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.lwjgl.assimp.Assimp.*;
-import static org.lwjgl.assimp.Assimp.aiProcess_FixInfacingNormals;
 import static org.lwjgl.opengl.ARBVertexArrayObject.glBindVertexArray;
 import static org.lwjgl.opengl.ARBVertexArrayObject.glGenVertexArrays;
 import static org.lwjgl.opengl.ARBVertexBufferObject.*;
-import static org.lwjgl.opengl.ARBVertexBufferObject.GL_STATIC_DRAW_ARB;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
-import static org.lwjgl.opengl.GL11.glDrawElements;
-import static org.lwjgl.opengl.GL15C.*;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15C.GL_FLOAT;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 public class VertexArrayObject {
-    public static List<VertexArrayObject> fromObj(String resourcePath) throws Exception {
-        System.out.println(resourcePath);
-        AIScene aiScene = aiImportFile(resourcePath, aiProcess_JoinIdenticalVertices | aiProcess_Triangulate | aiProcess_FixInfacingNormals | aiProcess_FlipUVs);
-        if(aiScene.mNumMeshes() <= 0) throw new Exception("No meshes fround in file: " + resourcePath);
-        var list = new ArrayList<VertexArrayObject>();
-        for(var i = 0; i < aiScene.mNumMeshes(); i++) {
-            var mesh = AIMesh.create(aiScene.mMeshes().get(i));
-            var vao = new VertexArrayObject(mesh);
-            list.add(vao);
-        }
-        return list;
-    }
-
     public final int handle;
-    public boolean isIndexed = false;
-
+    public String name;
     public static final int POSITION_ATTRIBUTE_LOCATION = 0;
     public static final int NORMAL_ATTRIBUTE_LOCATION = 1;
     public static final int UV_ATTRIBUTE_LOCATION = 2;
 
     private int elementCount;
 
-    public VertexArrayObject(AIMesh mesh) {
+    public VertexArrayObject(String name, AIMesh mesh) {
+        this.name = name;
         handle = glGenVertexArrays();
         glBindVertexArray(handle);
 
@@ -89,7 +65,6 @@ public class VertexArrayObject {
         var elementArrayBuffer = glGenBuffersARB();
         glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, elementArrayBuffer);
         glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER_ARB, elementArrayBufferData, GL_STATIC_DRAW_ARB);
-        isIndexed = true;
 
         glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
         glBindVertexArray(0);

@@ -1,17 +1,16 @@
 #version 460
 
-uniform sampler2D diffuseTex;
 uniform mat3 normalMatrix;
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 uniform vec3 cameraPosition;
 
-uniform sampler2D diffuseTexture;
-uniform sampler2D normalTexture;
-uniform sampler2D roughnessTexture;
-uniform sampler2D displacementTexture;
-uniform sampler2D metalnessTexture;
+uniform sampler2D albedoMap;
+uniform sampler2D normalMap;
+uniform sampler2D roughnessMap;
+uniform sampler2D aoMap;
+uniform sampler2D metalnessMap;
 
 in vec3 position;
 in vec3 normal;
@@ -37,7 +36,7 @@ const float PI = 3.14159265359;
 // technique somewhere later in the normal mapping tutorial.
 vec3 getNormalFromMap()
 {
-	vec3 tangentNormal = texture(normalTexture, uv).xyz * 2.0 - 1.0;
+	vec3 tangentNormal = texture(normalMap, uv).xyz * 2.0 - 1.0;
 
 	vec3 Q1  = dFdx(position);
 	vec3 Q2  = dFdy(position);
@@ -94,10 +93,10 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
 // ----------------------------------------------------------------------------
 void main()
 {
-	vec3 albedo     = pow(texture(diffuseTex, uv).rgb, vec3(2.2));
-	float metallic  = texture(metalnessTexture, uv).r;
-	float roughness = texture(roughnessTexture, uv).r;
-	float ao        = texture(displacementTexture, uv).r;
+	vec3 albedo     = pow(texture(albedoMap, uv).rgb, vec3(2.2));
+	float metallic  = texture(metalnessMap, uv).r;
+	float roughness = texture(roughnessMap, uv).r;
+	float ao        = texture(aoMap, uv).r;
 
 	vec3 N = getNormalFromMap();
 	vec3 V = normalize((inverse(viewMatrix) * vec4(cameraPosition, 1.0)).xyz - position);

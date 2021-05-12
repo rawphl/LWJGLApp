@@ -1,4 +1,4 @@
-package ch.bbcag.lwjgl.opengl;
+package ch.bbcag.lwjgl.framework;
 
 import ch.bbcag.lwjgl.App;
 import org.joml.*;

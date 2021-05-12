@@ -1,36 +1,8 @@
 package ch.bbcag.lwjgl;
 
-import ch.bbcag.lwjgl.opengl.Material;
-import ch.bbcag.lwjgl.opengl.Shader;
-import ch.bbcag.lwjgl.opengl.Texture;
-import de.matthiasmann.twl.utils.PNGDecoder;
-import imgui.ImGui;
-import imgui.ImGuiIO;
-import imgui.flag.ImGuiConfigFlags;
-import imgui.gl3.ImGuiImplGl3;
-import imgui.glfw.ImGuiImplGlfw;
-import org.joml.Vector3f;
-import org.lwjgl.*;
-import org.lwjgl.glfw.*;
-import org.lwjgl.opengl.*;
-import org.lwjgl.system.*;
-
-import java.nio.*;
-
-import static org.lwjgl.glfw.Callbacks.*;
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.ARBVertexShader.glGetAttribLocationARB;
-import static org.lwjgl.opengl.ARBVertexShader.glVertexAttribPointerARB;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11C.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11C.glBindTexture;
-import static org.lwjgl.opengl.GL13C.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL30C.glGenerateMipmap;
-import static org.lwjgl.system.MemoryStack.*;
-import static org.lwjgl.system.MemoryUtil.*;
-import static org.lwjgl.opengl.GL20.*;
 
 public class App {
+    /*
     private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
     private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
     public static int id;
@@ -269,9 +241,9 @@ public class App {
         }
     }
 
-
     public static void main(String[] args) throws Exception {
         var app = new App();
         app.run();
     }
+    */
 }

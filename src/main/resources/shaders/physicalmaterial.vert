@@ -4,7 +4,6 @@ layout (location = 0) in vec3 vertex_position;
 layout (location = 1) in vec3 vertex_normal;
 layout (location = 2) in vec2 vertex_uv;
 
-uniform sampler2D diffuseTex;
 uniform mat3 normalMatrix;
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
@@ -12,11 +11,11 @@ uniform mat4 projectionMatrix;
 uniform vec3 cameraPosition;
 uniform vec2 offsetRepeat;
 
-uniform sampler2D diffuseTexture;
-uniform sampler2D normalTexture;
-uniform sampler2D roughnessTexture;
-uniform sampler2D displacementTexture;
-uniform sampler2D metalnessTexture;
+uniform sampler2D albedoMap;
+uniform sampler2D normalMap;
+uniform sampler2D roughnessMap;
+uniform sampler2D aoMap;
+uniform sampler2D metalnessMap;
 
 out vec3 eye;
 out vec3 position;
