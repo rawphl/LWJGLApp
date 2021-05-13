@@ -21,8 +21,7 @@ public abstract class App {
     protected int height;
     protected long window;
     protected Renderer renderer;
-    protected float t = 0;
-    protected float dt = 0.01f;
+    protected Timer timer = new Timer();
 
     public App(String title, int width, int height) {
         this.title = title;
@@ -69,6 +68,7 @@ public abstract class App {
         glfwSwapInterval(1);
         glfwShowWindow(window);
         GL.createCapabilities();
+        timer.init();
     }
 
     private void initInput() {
@@ -91,8 +91,8 @@ public abstract class App {
 
     private void loop() {
         while (!glfwWindowShouldClose(window)) {
-            t += dt;
-            onUpdate(t, dt);
+            timer.update();
+            onUpdate((float) timer.getTime(), timer.getDelta());
             onRender();
             glfwSwapBuffers(window);
             glfwPollEvents();
@@ -117,6 +117,11 @@ public abstract class App {
         loop();
         onTerminate();
         terminate();
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+        glfwSetWindowTitle(window, title);
     }
 }
 

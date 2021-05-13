@@ -13,13 +13,12 @@ import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 public class VertexArrayObject {
-    public final int handle;
-    public String name;
     public static final int POSITION_ATTRIBUTE_LOCATION = 0;
     public static final int NORMAL_ATTRIBUTE_LOCATION = 1;
     public static final int UV_ATTRIBUTE_LOCATION = 2;
-
-    private int elementCount;
+    public final int handle;
+    public String name;
+    private final int elementCount;
 
     public VertexArrayObject(String name, AIMesh mesh) {
         this.name = name;
@@ -43,7 +42,7 @@ public class VertexArrayObject {
         var uvArrayBuffer = glGenBuffersARB();
         glBindBufferARB(GL_ARRAY_BUFFER_ARB, uvArrayBuffer);
         var uvs = mesh.mTextureCoords(0);
-        if(uvs != null)  {
+        if (uvs != null) {
             nglBufferDataARB(GL_ARRAY_BUFFER_ARB, AIVector3D.SIZEOF * uvs.remaining(), uvs.address(), GL_STATIC_DRAW_ARB);
             glVertexAttribPointer(UV_ATTRIBUTE_LOCATION, 3, GL_FLOAT, false, 0, 0);
             glEnableVertexAttribArray(UV_ATTRIBUTE_LOCATION);

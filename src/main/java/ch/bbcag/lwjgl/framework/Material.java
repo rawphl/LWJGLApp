@@ -1,14 +1,9 @@
 package ch.bbcag.lwjgl.framework;
 
 import org.joml.Vector2f;
-import org.lwjgl.BufferUtils;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.FloatBuffer;
-
-import static org.lwjgl.opengl.GL20.glGetUniformLocation;
-import static org.lwjgl.opengl.GL20.glUniform1i;
 
 public class Material extends Shader {
     public Texture albedoMap;

@@ -6,8 +6,8 @@ import static org.lwjgl.opengl.GL20.glUniform1i;
 
 public class Renderer {
     private boolean depthTestEnabled = false;
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
 
     public Renderer(int width, int height) {
         this.width = width;
@@ -16,8 +16,8 @@ public class Renderer {
 
     public void setDepthTest(boolean depthTestEnabled) {
         this.depthTestEnabled = depthTestEnabled;
-        if(depthTestEnabled) glEnable(GL_DEPTH_TEST);
-        if(!depthTestEnabled) glDisable(GL_DEPTH_TEST);
+        if (depthTestEnabled) glEnable(GL_DEPTH_TEST);
+        if (!depthTestEnabled) glDisable(GL_DEPTH_TEST);
     }
 
     public void renderMesh(Mesh mesh, Camera camera) {

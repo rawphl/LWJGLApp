@@ -26,10 +26,10 @@ public class Object3D {
     }
 
     public void updateMatrices() {
-        if(!needsUpdate) return;
+        if (!needsUpdate) return;
         modelMatrix.identity();
 
-        if(parent != null) {
+        if (parent != null) {
             parent.modelMatrix.mul(modelMatrix);
         }
 

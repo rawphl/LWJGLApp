@@ -14,43 +14,39 @@ public class Camera extends Object3D {
     public Vector3f up = new Vector3f(0, 1, 0);
     public Vector3f forward = new Vector3f(0, 0, 1);
     public Vector3f right = new Vector3f(1, 0, 0);
-
-    public Quaternionf yawQuat = new Quaternionf();
-    public Quaternionf pitchQuat = new Quaternionf();
-
     public float yaw = 0;
     public float pitch = 0;
-
+    public Quaternionf yawQuat = new Quaternionf().identity();
+    public Quaternionf pitchQuat = new Quaternionf().identity();
 
     public Camera(float fov, float aspect, float near, float far) {
-        position.set(target).add(offset);
         projectionMatrix.perspective(fov, aspect, near, far);
     }
 
     public void updateMatrices() {
-        modelMatrix.identity().set(viewMatrix).invert();
-        modelMatrix.getTranslation(position);
-        modelMatrix.getNormalizedRotation(rotation.normalize());
-        modelMatrix.getScale(scale);
+        super.updateMatrices();
+        viewMatrix.set(modelMatrix).invert();
     }
 
     public void updateProjectionMatrix(float fov, float aspect, float near, float far) {
         projectionMatrix.identity().perspective(fov, aspect, near, far);
     }
 
-    public void arcball(float _pitch, float _yaw) {
-        yaw += _yaw;
-        pitch += _pitch;
-        var t = new Vector3f(target).sub(offset);
-        viewMatrix.translate(t.negate()).rotateX(pitch).rotateY(yaw).translate(t.negate());
-        updateMatrices();
-    }
+    public void update(float t, float dt) {
+        yawQuat.setAngleAxis(yaw * dt, 0, 1, 0);
+        yawQuat.transform(offset.normalize());
+        yawQuat.transform(up);
 
-    public void lookAt(Vector3f target) {
-        viewMatrix.identity().lookAt(position, target, UP);
-        modelMatrix.identity().set(viewMatrix).invert();
-        modelMatrix.getTranslation(position);
-        modelMatrix.getNormalizedRotation(rotation.normalize());
-        modelMatrix.getScale(scale);
+        forward.set(offset).negate().normalize();
+        right.set(up).cross(forward).normalize();
+
+        pitchQuat.setAngleAxis(pitch * dt, right.x, right.y, right.z);
+        pitchQuat.transform(offset);
+        pitchQuat.transform(up);
+
+        viewMatrix.identity().lookAt(offset.mul(zoom), target, up);
+        modelMatrix.set(viewMatrix).invert();
+        yaw = 0;
+        pitch = 0;
     }
 }
