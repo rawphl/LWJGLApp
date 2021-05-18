@@ -2,6 +2,9 @@ package ch.bbcag.lwjgl;
 
 import ch.bbcag.lwjgl.framework.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -18,6 +21,7 @@ public class TestApp extends App {
     public Mesh mesh;
     public Mesh suzanneMesh;
     public Mesh plane;
+    public List<Mesh> rover;
     public Camera camera;
     public SkyBox skybox;
 
@@ -34,23 +38,25 @@ public class TestApp extends App {
         skybox = new SkyBox(skyboxMaterial);
         skybox.scale.set(100, 100, 100);
         skybox.needsUpdate = true;
+        var plasticMaterial = new Material("/pbr/plastic");
+        var wallMaterial = new Material("/pbr/wall");
+        var goldMaterial = new Material("/pbr/curved-wet-cobble");
+        rover = AssetLoader.loadObj("/meshes/Rover3.obj").stream().map(vao -> new Mesh(vao, plasticMaterial)).collect(Collectors.toList());
 
         var suzanne = AssetLoader.loadSingleObj("/meshes/suzanne.obj");
         var sphere = AssetLoader.loadSingleObj("/meshes/sphere.obj");
         var pplane = AssetLoader.loadSingleObj("/meshes/scene1.obj");
 
-        var plasticMaterial = new Material("/pbr/plastic");
-        var wallMaterial = new Material("/pbr/wall");
-        var goldMaterial = new Material("/pbr/curved-wet-cobble");
+
 
         mesh = new Mesh(sphere, plasticMaterial);
-        plane = new Mesh(pplane, wallMaterial);
+        plane = new Mesh(pplane, plasticMaterial);
         suzanneMesh = new Mesh(suzanne, goldMaterial);
         plane.position.y -= 2;
         suzanneMesh.position.z += 2;
 
 
-        wallMaterial.offsetRepeat.set(8);
+        wallMaterial.offsetRepeat.set(2);
 
         camera = new Camera((float) Math.toRadians(10), (float) width / height, 0.01f, 1000.0f);
         camera.position.set(0, 0, 25);
@@ -120,8 +126,12 @@ public class TestApp extends App {
     public void onRender() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         renderer.renderSkyBox(skybox, camera);
+        /*
+        for(var m : rover) {
+            renderer.renderMesh(m, camera);
+        }*/
         renderer.renderMesh(mesh, camera);
-        renderer.renderMesh(suzanneMesh, camera);
+        //renderer.renderMesh(suzanneMesh, camera);
         renderer.renderMesh(plane, camera);
     }
 }

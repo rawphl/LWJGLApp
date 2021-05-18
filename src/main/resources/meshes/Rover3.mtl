@@ -1,0 +1,90 @@
+# Blender MTL File: 'None'
+# Material Count: 8
+
+newmtl internals
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.804087 0.751515 0.606071
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl parts_AO
+Ns 56.250000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:\\Users\\ivanc\\AppData\\Local\\Temp\\gltfimg-s6c3todz\\parts_AO.jpg.png
+
+newmtl tex_01
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\ivanc\\AppData\\Local\\Temp\\gltfimg-ft_ipw_a\\tex_01.jpg.png
+
+newmtl tex_02
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\ivanc\\AppData\\Local\\Temp\\gltfimg-kymtmpgf\\tex_02.jpg.png
+
+newmtl tex_03
+Ns 81.000006
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:\\Users\\ivanc\\AppData\\Local\\Temp\\gltfimg-lo09gm9n\\tex_03.png.png
+
+newmtl tex_03a
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\ivanc\\AppData\\Local\\Temp\\gltfimg-oxe5whn6\\tex_03.png.png
+map_d C:\\Users\\ivanc\\AppData\\Local\\Temp\\gltfimg-oxe5whn6\\tex_03.png.png
+
+newmtl tex_04
+Ns 56.250000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd C:\\Users\\ivanc\\AppData\\Local\\Temp\\gltfimg-gw2t2fpn\\tex_04.jpg.png
+
+newmtl tex_05
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:\\Users\\ivanc\\AppData\\Local\\Temp\\gltfimg-kk506cq0\\tex_05.jpg.png

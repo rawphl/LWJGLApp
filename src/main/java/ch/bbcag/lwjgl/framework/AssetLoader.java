@@ -52,18 +52,15 @@ public class AssetLoader {
 
         if (components.get(0) == 4) {
             GL11.glTexImage2D(GL_TEXTURE_2D, 0, GL11.GL_RGBA, w, h, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, data);
-            GL11.glTexParameteri(GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-            GL11.glTexParameteri(GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-            glGenerateMipmap(GL_TEXTURE_2D);
         } else if (components.get(0) == 3) {
             GL11.glTexImage2D(GL_TEXTURE_2D, 0, GL11.GL_RGB, w, h, 0, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, data);
-            GL11.glTexParameteri(GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-            GL11.glTexParameteri(GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-            glGenerateMipmap(GL_TEXTURE_2D);
         } else if (components.get(0) == 1) {
-            GL11.glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, w, h, 0, GL_RED, GL_RG32F, data);
+            GL11.glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, w, h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, data);
         }
 
+        GL11.glTexParameteri(GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR_MIPMAP_NEAREST);
+        GL11.glTexParameteri(GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+        glGenerateMipmap(GL_TEXTURE_2D);
         stbi_image_free(data);
         return id;
     }
@@ -90,9 +87,12 @@ public class AssetLoader {
         } else if (components.get(0) == 3) {
             GL11.glTexImage2D(target, 0, GL11.GL_RGB, w, h, 0, GL11.GL_RGB, GL11.GL_UNSIGNED_BYTE, data);
         } else if (components.get(0) == 1) {
-            GL11.glTexImage2D(target, 0, GL_RED, w, h, 0, GL_RED, GL_RG32F, data);
+            GL11.glTexImage2D(target, 0, GL_ALPHA, w, h, 0, GL_ALPHA, GL_FLOAT, data);
         }
 
+        GL11.glTexParameteri(GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR_MIPMAP_NEAREST);
+        GL11.glTexParameteri(GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+        glGenerateMipmap(GL_TEXTURE_2D);
         stbi_image_free(data);
         return id;
     }
@@ -123,7 +123,7 @@ public class AssetLoader {
             LOGGER.info(materialName);
             var str = name.dataString();
             LOGGER.info("Mesh(name=" + str + ")");
-            var vao = new VertexArrayObject(name.toString(), mesh);
+            var vao = new VertexArrayObject(name.dataString(), mesh);
             list.add(vao);
         }
         return list;

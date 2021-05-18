@@ -18,6 +18,7 @@ public class Shader {
     private final FloatBuffer tmp2 = BufferUtils.createFloatBuffer(9);
     private final FloatBuffer tmp3 = BufferUtils.createFloatBuffer(3);
     private final FloatBuffer tmp4 = BufferUtils.createFloatBuffer(2);
+
     public Shader(String name) throws IOException, URISyntaxException {
         var vertexShaderPath = Path.of(App.class.getResource("/shaders/" + name + ".vert").toURI());
         var vertexShaderSource = Files.readString(vertexShaderPath);
